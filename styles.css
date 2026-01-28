@@ -829,48 +829,6 @@ p {
   }
 }
 
-/* ===== Flying Airplane Animation ===== */
-.flying-airplane {
-  position: fixed;
-  top: 15%;
-  left: 0;
-  z-index: 100;
-  pointer-events: none;
-  opacity: 0.9;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  transition: transform 0.1s linear;
-  will-change: transform;
-}
-
-@keyframes flyAcrossScreen {
-  0% {
-    left: -100px;
-    top: 15%;
-    transform: rotate(-5deg) scale(1);
-  }
-
-  25% {
-    top: 20%;
-    transform: rotate(0deg) scale(1.1);
-  }
-
-  50% {
-    top: 25%;
-    transform: rotate(5deg) scale(1);
-  }
-
-  75% {
-    top: 20%;
-    transform: rotate(0deg) scale(0.9);
-  }
-
-  100% {
-    left: calc(100% + 100px);
-    top: 15%;
-    transform: rotate(-5deg) scale(1);
-  }
-}
-
 /* ===== Airplane Photo Gallery Section ===== */
 .airplane-section {
   background: linear-gradient(135deg, #87CEEB 0%, #4A90E2 50%, #2E5C8A 100%);
@@ -1060,6 +1018,54 @@ p {
   margin-top: var(--spacing-lg);
   font-style: italic;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .airplane-container {
+    max-width: 90%;
+    padding: var(--spacing-lg) var(--spacing-md);
+    margin: var(--spacing-lg) auto;
+  }
+
+  .wing {
+    height: 60px;
+  }
+
+  .wing-left {
+    left: -40px;
+    width: 80px;
+  }
+
+  .wing-right {
+    right: -40px;
+    width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .airplane-container {
+    border-radius: 40px 40px 20px 20px;
+    padding: var(--spacing-md);
+  }
+
+  .cockpit-window {
+    width: 80px;
+    height: 55px;
+  }
+
+  .wing {
+    display: none;
+    /* Hide wings on very small screens to avoid horizontal scroll */
+  }
+
+  .airplane-tail {
+    width: 40px;
+    height: 60px;
+  }
+
+  .airplane-seat {
+    border-width: 2px;
+  }
 }
 
 /* ===== Footer ===== */

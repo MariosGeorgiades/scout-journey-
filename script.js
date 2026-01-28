@@ -1,4 +1,4 @@
-// ===== WOW FACTOR: Floating Golden Particles Animation =====
+
 class ParticleSystem {
   constructor(container) {
     this.container = container;
@@ -7,7 +7,7 @@ class ParticleSystem {
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d');
 
-    // Setup canvas
+
     this.canvas.style.position = 'absolute';
     this.canvas.style.top = '0';
     this.canvas.style.left = '0';
@@ -50,21 +50,18 @@ class ParticleSystem {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.particles.forEach(particle => {
-      // Update position
+
       particle.x += particle.speedX;
       particle.y += particle.speedY;
 
-      // Wrap around edges
       if (particle.x < 0) particle.x = this.canvas.width;
       if (particle.x > this.canvas.width) particle.x = 0;
       if (particle.y < 0) particle.y = this.canvas.height;
       if (particle.y > this.canvas.height) particle.y = 0;
 
-      // Pulse effect
       particle.pulsePhase += particle.pulseSpeed;
       const pulse = Math.sin(particle.pulsePhase) * 0.3 + 0.7;
 
-      // Draw particle with glow
       const gradient = this.ctx.createRadialGradient(
         particle.x, particle.y, 0,
         particle.x, particle.y, particle.size * 3
@@ -78,7 +75,7 @@ class ParticleSystem {
       this.ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2);
       this.ctx.fill();
 
-      // Draw core
+
       this.ctx.fillStyle = `rgba(255, 235, 180, ${particle.opacity * pulse})`;
       this.ctx.beginPath();
       this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
@@ -89,7 +86,6 @@ class ParticleSystem {
   }
 }
 
-// ===== WOW FACTOR: Typewriter Effect =====
 function typewriterEffect(element, text, speed = 80) {
   element.textContent = '';
   element.style.opacity = '1';
@@ -103,11 +99,10 @@ function typewriterEffect(element, text, speed = 80) {
     }
   };
 
-  // Start typing after a small delay
   setTimeout(type, 500);
 }
 
-// ===== WOW FACTOR: 3D Tilt Effect for Cards =====
+
 function add3DTilt(card) {
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
@@ -128,13 +123,12 @@ function add3DTilt(card) {
   });
 }
 
-// ===== Navigation Functionality =====
 const navbar = document.getElementById('navbar');
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-// Navbar scroll effect
+
 window.addEventListener('scroll', () => {
   if (window.scrollY > 50) {
     navbar.classList.add('scrolled');
@@ -564,8 +558,14 @@ airplaneSeats.forEach(seat => {
   seat.addEventListener('click', () => {
     const seatPhoto = seat.querySelector('.seat-photo');
     const bgImage = window.getComputedStyle(seatPhoto).backgroundImage;
-    const imageUrl = bgImage.slice(5, -2);
 
+    // Robust URL extraction using regex
+    const urlMatch = bgImage.match(/url\(['"]?([^'"]+)['"]?\)/);
+    if (!urlMatch) return;
+
+    const imageUrl = urlMatch[1];
+
+    // Create lightbox
     const lightbox = document.createElement('div');
     lightbox.className = 'seat-lightbox';
     lightbox.innerHTML = `
