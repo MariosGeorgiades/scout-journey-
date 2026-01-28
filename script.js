@@ -335,7 +335,7 @@ window.addEventListener('scroll', () => {
 
 // ===== WOW FACTOR: Live Scouting Countdown =====
 function updateScoutingCountdown() {
-  const startDate = new Date('2018-01-01T00:00:00');
+  const startDate = new Date('2017-01-01T00:00:00');
   const now = new Date();
 
   // Calculate differences
@@ -557,7 +557,106 @@ window.addEventListener('load', () => {
   });
 });
 
+// ===== AVIATION: Airplane Seat Photo Gallery =====
+const airplaneSeats = document.querySelectorAll('.airplane-seat');
+
+airplaneSeats.forEach(seat => {
+  seat.addEventListener('click', () => {
+    const seatPhoto = seat.querySelector('.seat-photo');
+    const bgImage = window.getComputedStyle(seatPhoto).backgroundImage;
+    const imageUrl = bgImage.slice(5, -2);
+
+    const lightbox = document.createElement('div');
+    lightbox.className = 'seat-lightbox';
+    lightbox.innerHTML = `
+      <div class="lightbox-content">
+        <button class="lightbox-close" aria-label="Close">&times;</button>
+        <img src="${imageUrl}" alt="Αεροπροσκοπική Φωτογραφία">
+        <div class="lightbox-caption">Θέση ${seat.dataset.seat}</div>
+      </div>
+    `;
+
+    document.body.appendChild(lightbox);
+
+    const closeLightbox = () => {
+      lightbox.classList.add('closing');
+      setTimeout(() => lightbox.remove(), 300);
+    };
+
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    setTimeout(() => lightbox.classList.add('active'), 10);
+  });
+});
+
+// Lightbox styles
+const airplaneStyle = document.createElement('style');
+airplaneStyle.textContent = `
+  .seat-lightbox {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0); z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: all 0.3s ease;
+  }
+  .seat-lightbox.active {
+    background: rgba(0, 0, 0, 0.9); opacity: 1;
+  }
+  .lightbox-content {
+    position: relative; max-width: 90vw; max-height: 90vh;
+    transform: scale(0.7); transition: transform 0.3s ease;
+  }
+  .seat-lightbox.active .lightbox-content { transform: scale(1); }
+  .lightbox-content img {
+    max-width: 100%; max-height: 85vh; border-radius: 12px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+  }
+  .lightbox-close {
+    position: absolute; top: -40px; right: 0;
+    background: var(--accent-gold-bright); border: none; color: white;
+    font-size: 2rem; width: 40px; height: 40px; border-radius: 50%;
+    cursor: pointer; transition: all 0.3s ease;
+  }
+  .lightbox-close:hover {
+    background: var(--accent-gold); transform: rotate(90deg);
+  }
+  .lightbox-caption {
+    text-align: center; color: var(--accent-gold-bright);
+    font-size: 1.2rem; font-weight: 600; margin-top: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+`;
+document.head.appendChild(airplaneStyle);
+
+/*
+// ===== AVIATION: Scroll-Based Flying Airplane =====
+const flyingPlane = document.getElementById('flyingPlane');
+
+function updateAirplanePosition() {
+  const scrollPercentage = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+
+  // Move airplane from left (-100px) to right (100vw + 100px) based on scroll
+  const planePosition = (scrollPercentage / 100) * (window.innerWidth + 200) - 100;
+
+  // Add slight vertical bobbing based on scroll position
+  const verticalBob = Math.sin(scrollPercentage / 10) * 20;
+
+  // Rotate slightly based on direction
+  const rotation = Math.sin(scrollPercentage / 20) * 5;
+
+  flyingPlane.style.transform = `translateX(${planePosition}px) translateY(${verticalBob}px) rotate(${rotation}deg)`;
+}
+
+window.addEventListener('scroll', updateAirplanePosition);
+updateAirplanePosition();
+*/
+
+// Flying airplane animation removed per user request
+
 console.log('✨ Scout Journey website loaded with WOW features!');
 console.log('🎁 Easter Egg: Click the logo 3 times quickly for a surprise!');
 console.log('📊 Scroll Progress Bar: Active');
 console.log('⬆️ Scroll to Top Button: Ready');
+console.log('🛩️ Airplane Gallery: Click seats to view photos!');
