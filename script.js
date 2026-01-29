@@ -459,8 +459,8 @@ function updateCarousel3D() {
     let radius = 700; // Default for desktop
     if (window.innerWidth <= 480) {
       // Radius must be small enough so side items don't overflow
-      // Screen width * 0.35 ensures it fits
-      radius = window.innerWidth * 0.35;
+      // Screen width * 0.4 ensures it fits while reducing overlap
+      radius = window.innerWidth * 0.4;
     } else if (window.innerWidth <= 768) {
       radius = 350; // Tablet
     } else if (window.innerWidth <= 1024) {

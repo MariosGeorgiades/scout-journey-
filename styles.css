@@ -1343,14 +1343,14 @@ p {
   }
 
   .carousel-3d-item {
-    width: 65vw;
-    /* Slightly smaller to fit better */
+    width: 50vw;
+    /* Reduced to 50% to prevent overlap */
     max-width: 260px;
-    height: 50vw;
+    height: 40vw;
     max-height: 190px;
-    margin-left: -32.5vw;
+    margin-left: -25vw;
     /* Center based on half width */
-    margin-top: -25vw;
+    margin-top: -20vw;
   }
 
   /* Adjust margins for max-width constraint */
