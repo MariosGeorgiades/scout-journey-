@@ -650,10 +650,12 @@ function updateCarousel3D() {
   carousel3dItems.forEach((item, index) => {
     const itemAngle = carousel3dAngleIncrement * index;
 
-    // Dynamic radius based on screen width
+    // Dynamic radius based on screen width - Tighter constraint for mobile
     let radius = 700; // Default for desktop
     if (window.innerWidth <= 480) {
-      radius = 210; // Much smaller for mobile
+      // Radius must be small enough so side items don't overflow
+      // Screen width * 0.35 ensures it fits
+      radius = window.innerWidth * 0.35;
     } else if (window.innerWidth <= 768) {
       radius = 350; // Tablet
     } else if (window.innerWidth <= 1024) {

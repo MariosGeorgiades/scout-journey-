@@ -1343,28 +1343,27 @@ p {
   }
 
   .carousel-3d-item {
-    width: 75vw;
-    /* Relative width */
-    max-width: 280px;
-    height: 55vw;
-    /* Maintain aspect ratio roughly */
-    max-height: 200px;
-    margin-left: -37.5vw;
+    width: 65vw;
+    /* Slightly smaller to fit better */
+    max-width: 260px;
+    height: 50vw;
+    max-height: 190px;
+    margin-left: -32.5vw;
     /* Center based on half width */
-    margin-top: -27.5vw;
+    margin-top: -25vw;
   }
 
   /* Adjust margins for max-width constraint */
-  @media (min-width: 375px) {
+  @media (min-width: 400px) {
     .carousel-3d-item {
-      margin-left: -140px;
-      margin-top: -100px;
+      margin-left: -130px;
+      margin-top: -95px;
     }
   }
 
   .carousel-3d-stage {
-    perspective: 600px;
-    /* Reduced perspective for smaller screens */
+    perspective: 500px;
+    /* Stronger perspective for depth */
   }
 
   .carousel-3d-nav {
