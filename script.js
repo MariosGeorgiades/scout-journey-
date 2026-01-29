@@ -129,12 +129,12 @@ const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
 const scrollToTopBtn = document.getElementById('scrollToTop');
 
-// Mobile menu toggle
+
 navToggle.addEventListener('click', () => {
   navMenu.classList.toggle('active');
 });
 
-// Active link highlighting and smooth scroll
+
 navLinks.forEach(link => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
@@ -162,8 +162,7 @@ navLinks.forEach(link => {
   });
 });
 
-// ===== PERFORMANCE: Optimized Scroll Handling =====
-// Use IntersectionObserver for scroll-triggered animations instead of scroll event
+
 const observerOptions = {
   threshold: 0.1,
   rootMargin: '0px 0px -50px 0px'
@@ -173,34 +172,34 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
-      // Unobserve after showing to save resources
+
       observer.unobserve(entry.target);
     }
   });
 }, observerOptions);
 
-// Observe timeline items
+
 const timelineItems = document.querySelectorAll('.timeline-item');
 timelineItems.forEach(item => observer.observe(item));
 
-// Observe project cards with 3D tilt effect
+
 const projectCards = document.querySelectorAll('.project-card');
 projectCards.forEach((card, index) => {
   observer.observe(card);
-  // Add staggered 3D tilt only when visible
+
   setTimeout(() => {
     add3DTilt(card);
   }, index * 100);
 });
 
-// Observe gallery items with staggered animation
+
 const galleryItems = document.querySelectorAll('.gallery-item');
 galleryItems.forEach((item, index) => {
   item.style.transitionDelay = `${index * 0.05}s`;
   observer.observe(item);
 });
 
-// Optimized Navbar & Back-to-Top using IntersectionObserver
+
 const heroSection = document.querySelector('.hero');
 
 if (heroSection) {
@@ -221,7 +220,7 @@ if (heroSection) {
   heroObserver.observe(heroSection);
 }
 
-// Optimized Scroll Progress using RequestAnimationFrame
+
 const scrollProgress = document.getElementById('scrollProgress');
 let isScrolling = false;
 
@@ -246,8 +245,7 @@ function updateScrollProgress() {
 
 window.addEventListener('scroll', onScroll, { passive: true });
 
-// ===== PERFORMANCE: Page Visibility API =====
-// Pause animations when tab is inactive to save battery
+
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     stopCarousel3DRotation();
@@ -262,23 +260,23 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// ===== Lightbox Functionality =====
+
 const lightbox = document.getElementById('lightbox');
 const lightboxImage = document.getElementById('lightboxImage');
 const lightboxClose = document.getElementById('lightboxClose');
 
-// Open lightbox when gallery item is clicked
+
 galleryItems.forEach(item => {
   item.addEventListener('click', () => {
     const img = item.querySelector('img');
     lightboxImage.src = img.src;
     lightboxImage.alt = img.alt;
     lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+
   });
 });
 
-// Also make project images clickable
+
 const projectImages = document.querySelectorAll('.project-image');
 projectImages.forEach(img => {
   img.parentElement.addEventListener('click', () => {
@@ -289,29 +287,29 @@ projectImages.forEach(img => {
   });
 });
 
-// Close lightbox
+
 const closeLightbox = () => {
   lightbox.classList.remove('active');
-  document.body.style.overflow = ''; // Restore scrolling
+
 };
 
 lightboxClose.addEventListener('click', closeLightbox);
 
-// Close on background click
+
 lightbox.addEventListener('click', (e) => {
   if (e.target === lightbox) {
     closeLightbox();
   }
 });
 
-// Close on Escape key
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && lightbox.classList.contains('active')) {
     closeLightbox();
   }
 });
 
-// ===== Active Section Detection =====
+
 const sections = document.querySelectorAll('section[id]');
 
 const updateActiveLink = () => {
@@ -341,12 +339,12 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
-// ===== POLISH: Preload Critical Resources =====
+
 window.addEventListener('load', () => {
-  // Mark page as fully loaded
+
   document.body.classList.add('loaded');
 
-  // Preload hover states for better performance
+
   const projectCards = document.querySelectorAll('.project-card');
   projectCards.forEach(card => {
     card.style.willChange = 'transform';
@@ -356,21 +354,38 @@ window.addEventListener('load', () => {
   });
 });
 
-// ===== AVIATION: Airplane Seat Photo Gallery =====
+
 const airplaneSeats = document.querySelectorAll('.airplane-seat');
 
 airplaneSeats.forEach(seat => {
   seat.addEventListener('click', () => {
     const seatPhoto = seat.querySelector('.seat-photo');
-    const bgImage = window.getComputedStyle(seatPhoto).backgroundImage;
+    const computedStyle = window.getComputedStyle(seatPhoto);
+    let bgImage = computedStyle.backgroundImage;
 
-    // Robust URL extraction using regex
+    // Fallback to inline style if computed style is none or invalid
+    if (!bgImage || bgImage === 'none') {
+      bgImage = seatPhoto.style.backgroundImage;
+    }
+
+    if (!bgImage || bgImage === 'none') {
+      console.error('No background image found for seat:', seat.dataset.seat);
+      return;
+    }
+
+    // Robust URL extraction
+    let imageUrl = '';
     const urlMatch = bgImage.match(/url\(['"]?([^'"]+)['"]?\)/);
-    if (!urlMatch) return;
 
-    const imageUrl = urlMatch[1];
+    if (urlMatch && urlMatch[1]) {
+      imageUrl = urlMatch[1];
+    } else {
+      // Manual cleanup if regex fails
+      imageUrl = bgImage.replace(/^url\(['"]?/, '').replace(/['"]?\)$/, '');
+    }
 
-    // Create lightbox
+    console.log('Opening lightbox for seat:', seat.dataset.seat, 'Image:', imageUrl);
+
     const lightbox = document.createElement('div');
     lightbox.className = 'seat-lightbox';
     lightbox.innerHTML = `
@@ -397,7 +412,7 @@ airplaneSeats.forEach(seat => {
   });
 });
 
-// Lightbox styles
+
 const airplaneStyle = document.createElement('style');
 airplaneStyle.textContent = `
   .seat-lightbox {
@@ -435,7 +450,7 @@ airplaneStyle.textContent = `
 `;
 document.head.appendChild(airplaneStyle);
 
-// ===== 3D ROTATING PHOTO CAROUSEL =====
+
 const carousel3dWheel = document.getElementById('carousel3dWheel');
 const carousel3dItems = document.querySelectorAll('.carousel-3d-item');
 const carousel3dPrev = document.getElementById('carousel3dPrev');
@@ -451,41 +466,34 @@ const carousel3dAngleIncrement = 360 / carousel3dItemCount;
 function updateCarousel3D() {
   carousel3dWheel.style.transform = `rotateY(${carousel3dAngle}deg)`;
 
-  // Position each item in a circle
+
+  // Calculate radius based on item width (500px) and count
+  const radius = Math.round((500 / 2) / Math.tan(Math.PI / carousel3dItemCount));
+
   carousel3dItems.forEach((item, index) => {
     const itemAngle = carousel3dAngleIncrement * index;
 
-    // Dynamic radius based on screen width - Tighter constraint for mobile
-    let radius = 700; // Default for desktop
-    if (window.innerWidth <= 480) {
-      // Radius must be small enough so side items don't overflow
-      // Screen width * 0.4 ensures it fits while reducing overlap
-      radius = window.innerWidth * 0.4;
-    } else if (window.innerWidth <= 768) {
-      radius = 350; // Tablet
-    } else if (window.innerWidth <= 1024) {
-      radius = 500; // Laptop
-    }
+
 
     item.style.transform = `
       rotateY(${itemAngle}deg) 
       translateZ(${radius}px)
     `;
 
-    // Calculate if item is in front (facing viewer)
+
     const normalizedAngle = ((itemAngle - carousel3dAngle) % 360 + 360) % 360;
 
-    // Adjust opacity and scale based on position for depth effect
+
     if (normalizedAngle > 90 && normalizedAngle < 270) {
-      // Items on the back - Full visibility
+
       item.style.opacity = '1';
       item.style.transform += ' scale(0.85)';
     } else if (normalizedAngle > 45 && normalizedAngle <= 90 || normalizedAngle >= 270 && normalizedAngle < 315) {
-      // Items on the sides - Full visibility
+
       item.style.opacity = '1';
       item.style.transform += ' scale(0.95)';
     } else {
-      // Front item
+
       item.style.opacity = '1';
       item.style.transform += ' scale(1)';
     }
@@ -503,7 +511,7 @@ function startCarousel3DRotation() {
   carousel3dToggle.classList.add('rotating');
   carousel3dRotationInterval = setInterval(() => {
     rotateCarousel3D(1);
-  }, 4000); // Rotate every 4 seconds
+  }, 4000);
 }
 
 function stopCarousel3DRotation() {
@@ -513,7 +521,7 @@ function stopCarousel3DRotation() {
   carousel3dToggle.classList.remove('rotating');
 }
 
-// Navigation buttons
+
 carousel3dPrev.addEventListener('click', () => {
   stopCarousel3DRotation();
   rotateCarousel3D(-1);
@@ -524,7 +532,7 @@ carousel3dNext.addEventListener('click', () => {
   rotateCarousel3D(1);
 });
 
-// Toggle auto-rotation
+
 carousel3dToggle.addEventListener('click', () => {
   if (carousel3dIsRotating) {
     stopCarousel3DRotation();
@@ -533,7 +541,7 @@ carousel3dToggle.addEventListener('click', () => {
   }
 });
 
-// Click to expand photo in lightbox
+
 carousel3dItems.forEach(item => {
   const photo = item.querySelector('.carousel-3d-photo');
   photo.addEventListener('click', (e) => {
@@ -565,24 +573,24 @@ carousel3dItems.forEach(item => {
   });
 });
 
-// Initialize carousel
+
 updateCarousel3D();
-// Start auto-rotation by default
+
 startCarousel3DRotation();
 
-// Update on resize
+
 window.addEventListener('resize', () => {
   updateCarousel3D();
 });
 
-// ===== MOBILE: Touch Swipe Support =====
+
 const carouselContainer = document.querySelector('.carousel-3d-container');
 let touchStartX = 0;
 let touchEndX = 0;
 
 carouselContainer.addEventListener('touchstart', (e) => {
   touchStartX = e.changedTouches[0].screenX;
-  stopCarousel3DRotation(); // Stop auto-rotation on touch
+
 }, { passive: true });
 
 carouselContainer.addEventListener('touchend', (e) => {
@@ -596,33 +604,33 @@ function handleSwipe() {
 
   if (Math.abs(swipeDistance) > swipeThreshold) {
     if (swipeDistance > 0) {
-      // Swipe Right -> Previous Item
+
       rotateCarousel3D(-1);
     } else {
-      // Swipe Left -> Next Item
+
       rotateCarousel3D(1);
     }
   }
 }
 
 
-// ===== WOW FACTOR: Live Scouting Countdown =====
+
 const startDate = new Date('2017-10-01T00:00:00');
 
 function updateScoutingCountdown() {
   const now = new Date();
 
-  // Calculate differences
+
   const diffMs = now - startDate;
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  // Calculate years, months, days, hours
+
   let years = now.getFullYear() - startDate.getFullYear();
   let months = now.getMonth() - startDate.getMonth();
   let days = now.getDate() - startDate.getDate();
   let hours = now.getHours();
 
-  // Adjust for negative values
+
   if (days < 0) {
     months--;
     const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
@@ -634,7 +642,7 @@ function updateScoutingCountdown() {
     months += 12;
   }
 
-  // Update DOM
+
   const yearsEl = document.getElementById('years');
   const monthsEl = document.getElementById('months');
   const daysEl = document.getElementById('days');
@@ -646,7 +654,7 @@ function updateScoutingCountdown() {
   if (hoursEl) hoursEl.textContent = hours;
 }
 
-// Update countdown every second
+
 updateScoutingCountdown();
 setInterval(updateScoutingCountdown, 1000);
 
