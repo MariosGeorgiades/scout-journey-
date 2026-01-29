@@ -575,6 +575,36 @@ window.addEventListener('resize', () => {
   updateCarousel3D();
 });
 
+// ===== MOBILE: Touch Swipe Support =====
+const carouselContainer = document.querySelector('.carousel-3d-container');
+let touchStartX = 0;
+let touchEndX = 0;
+
+carouselContainer.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+  stopCarousel3DRotation(); // Stop auto-rotation on touch
+}, { passive: true });
+
+carouselContainer.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+}, { passive: true });
+
+function handleSwipe() {
+  const swipeThreshold = 50; // Minimum distance for a swipe
+  const swipeDistance = touchEndX - touchStartX;
+
+  if (Math.abs(swipeDistance) > swipeThreshold) {
+    if (swipeDistance > 0) {
+      // Swipe Right -> Previous Item
+      rotateCarousel3D(-1);
+    } else {
+      // Swipe Left -> Next Item
+      rotateCarousel3D(1);
+    }
+  }
+}
+
 
 // ===== WOW FACTOR: Live Scouting Countdown =====
 const startDate = new Date('2017-10-01T00:00:00');
