@@ -727,7 +727,7 @@ p {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="rgba(212,175,55,0.05)"/></svg>');
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
   opacity: 0.3;
   pointer-events: none;
 }
@@ -829,12 +829,13 @@ p {
   }
 }
 
-/* ===== Airplane Photo Gallery Section ===== */
+/* ===== Airplane Gallery Styles ===== */
 .airplane-section {
-  background: linear-gradient(135deg, #87CEEB 0%, #4A90E2 50%, #2E5C8A 100%);
+  background: linear-gradient(135deg, #00C9FF 0%, #0080FF 50%, #0052CC 100%);
   padding: var(--spacing-xxl) var(--spacing-lg);
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 100px rgba(255, 215, 0, 0.2);
 }
 
 .airplane-section::before {
@@ -858,16 +859,14 @@ p {
 }
 
 .airplane-container {
-  max-width: 650px;
+  max-width: 700px;
   margin: var(--spacing-xl) auto;
   position: relative;
-  background: linear-gradient(180deg, #ffffff 0%, #e8e8e8 50%, #d5d5d5 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 30%, #e0e0e0 70%, #d0d0d0 100%);
   border-radius: 60px 60px 25px 25px;
   padding: var(--spacing-xl) var(--spacing-lg);
-  box-shadow:
-    0 25px 70px rgba(0, 0, 0, 0.5),
-    inset 0 2px 5px rgba(255, 255, 255, 0.5);
-  border: 2px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 3px 10px rgba(255, 255, 255, 0.7), 0 0 40px rgba(255, 215, 0, 0.3);
+  border: 3px solid rgba(255, 215, 0, 0.6);
 }
 
 .airplane-container::before {
@@ -891,13 +890,11 @@ p {
 .cockpit-window {
   width: 100px;
   height: 70px;
-  background: linear-gradient(135deg, #5AA5E8 0%, #2E5C8A 100%);
+  background: linear-gradient(135deg, #00D4FF 0%, #0080FF 100%);
   border-radius: 50px 50px 0 0;
   margin: 0 auto;
-  border: 4px solid var(--accent-gold);
-  box-shadow:
-    inset 0 3px 15px rgba(255, 255, 255, 0.4),
-    0 5px 20px rgba(0, 0, 0, 0.3);
+  border: 5px solid #FFD700;
+  box-shadow: inset 0 4px 20px rgba(255, 255, 255, 0.6), 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.5);
   position: relative;
 }
 
@@ -930,15 +927,15 @@ p {
   cursor: pointer;
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 3px solid var(--accent-gold);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 4px solid #FFD700;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.4);
   transition: all var(--transition-normal);
 }
 
 .airplane-seat:hover {
-  transform: scale(1.1) translateY(-5px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
-  border-color: var(--accent-gold-bright);
+  transform: scale(1.15) translateY(-8px);
+  box-shadow: 0 12px 35px rgba(255, 215, 0, 0.7), 0 0 30px rgba(255, 215, 0, 0.6);
+  border-color: #FFA500;
   z-index: 10;
 }
 
@@ -947,30 +944,29 @@ p {
   height: 100%;
   background-size: cover;
   background-position: center;
-  background-color: rgba(45, 80, 22, 0.1);
 }
 
 .seat-label {
   position: absolute;
   bottom: 5px;
   right: 5px;
-  background: rgba(45, 80, 22, 0.9);
-  color: var(--accent-gold-bright);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 700;
+  background: linear-gradient(135deg, rgba(45, 80, 22, 0.95), rgba(30, 60, 15, 0.95));
+  color: #FFD700;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
   pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .airplane-aisle {
-  width: 30px;
+  width: 35px;
   height: 100%;
-  background: linear-gradient(90deg,
-      rgba(74, 144, 226, 0.2) 0%,
-      rgba(74, 144, 226, 0.4) 50%,
-      rgba(74, 144, 226, 0.2) 100%);
-  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(0, 150, 255, 0.3) 0%, rgba(0, 180, 255, 0.6) 50%, rgba(0, 150, 255, 0.3) 100%);
+  border-radius: 6px;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .airplane-wings {
@@ -984,10 +980,11 @@ p {
 
 .wing {
   position: absolute;
-  height: 80px;
-  background: linear-gradient(135deg, #c0c0c0, #909090);
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  height: 90px;
+  background: linear-gradient(135deg, #e0e0e0, #a8a8a8);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 215, 0, 0.2);
+  border: 2px solid rgba(255, 215, 0, 0.3);
 }
 
 .wing-left {
@@ -1065,6 +1062,297 @@ p {
 
   .airplane-seat {
     border-width: 2px;
+  }
+}
+
+/* ===== 3D Rotating Photo Carousel ===== */
+.carousel-3d-section {
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1d3e 50%, #0f1628 100%);
+  padding: calc(var(--spacing-xxl) * 1.5) var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-3d-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.carousel-3d-section .section-title {
+  color: var(--white);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.8);
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.carousel-3d-section .section-description {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+}
+
+.carousel-3d-container {
+  max-width: 1400px;
+  margin: calc(var(--spacing-xxl) * 1.5) auto 0;
+  position: relative;
+  height: 700px;
+}
+
+.carousel-3d-stage {
+  width: 100%;
+  height: 100%;
+  perspective: 1800px;
+  perspective-origin: 50% 50%;
+}
+
+.carousel-3d-wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-3d-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 350px;
+  margin-left: -250px;
+  margin-top: -175px;
+  transform-style: preserve-3d;
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.carousel-3d-photo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.8),
+    0 0 50px rgba(255, 215, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 4px solid rgba(255, 215, 0, 0.8);
+  background: #000;
+  /* Dark background for letterboxing */
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+.carousel-3d-photo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 165, 0, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.carousel-3d-photo:hover::before {
+  opacity: 1;
+}
+
+.carousel-3d-photo:hover {
+  transform: scale(1.08) translateZ(20px);
+  box-shadow:
+    0 40px 110px rgba(0, 0, 0, 0.9),
+    0 0 80px rgba(255, 215, 0, 0.7),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.carousel-3d-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Show FULL image without cropping */
+  display: block;
+  filter: brightness(1);
+  /* Full brightness always */
+  transition: filter 0.3s ease;
+}
+
+.carousel-3d-photo:hover img {
+  filter: brightness(1.05);
+}
+
+.carousel-3d-reflection {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Navigation Buttons */
+.carousel-3d-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.95), rgba(255, 165, 0, 0.95));
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 8px 30px rgba(255, 215, 0, 0.5),
+    0 0 40px rgba(255, 215, 0, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.carousel-3d-nav:hover {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  transform: translateY(-50%) scale(1.15);
+  box-shadow:
+    0 12px 40px rgba(255, 215, 0, 0.7),
+    0 0 60px rgba(255, 215, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.carousel-3d-nav:active {
+  transform: translateY(-50%) scale(1.05);
+}
+
+.carousel-3d-prev {
+  left: 30px;
+}
+
+.carousel-3d-next {
+  right: 30px;
+}
+
+/* Auto-rotate toggle */
+.carousel-3d-toggle {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 215, 0, 0.15);
+  border: 3px solid rgba(255, 215, 0, 0.5);
+  border-radius: 50%;
+  color: #FFD700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+}
+
+.carousel-3d-toggle:hover {
+  background: rgba(255, 215, 0, 0.25);
+  border-color: #FFD700;
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 6px 30px rgba(255, 215, 0, 0.5);
+}
+
+.carousel-3d-toggle.rotating {
+  background: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+}
+
+.carousel-3d-toggle.rotating .play-icon {
+  display: none;
+}
+
+.carousel-3d-toggle.rotating .pause-icon {
+  display: block !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .carousel-3d-container {
+    height: 500px;
+  }
+
+  .carousel-3d-item {
+    width: 350px;
+    height: 250px;
+    margin-left: -175px;
+    margin-top: -125px;
+  }
+
+  .carousel-3d-nav {
+    width: 60px;
+    height: 60px;
+  }
+
+  .carousel-3d-prev {
+    left: 15px;
+  }
+
+  .carousel-3d-next {
+    right: 15px;
+  }
+
+  .carousel-3d-stage {
+    perspective: 1200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-3d-container {
+    height: 400px;
+  }
+
+  .carousel-3d-item {
+    width: 280px;
+    height: 200px;
+    margin-left: -140px;
+    margin-top: -100px;
+  }
+
+  .carousel-3d-stage {
+    perspective: 900px;
+  }
+
+  .carousel-3d-nav {
+    width: 50px;
+    height: 50px;
+  }
+
+  .carousel-3d-prev {
+    left: 10px;
+  }
+
+  .carousel-3d-next {
+    right: 10px;
   }
 }
 

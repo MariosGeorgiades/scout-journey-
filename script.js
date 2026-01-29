@@ -630,30 +630,130 @@ airplaneStyle.textContent = `
 `;
 document.head.appendChild(airplaneStyle);
 
-/*
-// ===== AVIATION: Scroll-Based Flying Airplane =====
-const flyingPlane = document.getElementById('flyingPlane');
+// ===== 3D ROTATING PHOTO CAROUSEL =====
+const carousel3dWheel = document.getElementById('carousel3dWheel');
+const carousel3dItems = document.querySelectorAll('.carousel-3d-item');
+const carousel3dPrev = document.getElementById('carousel3dPrev');
+const carousel3dNext = document.getElementById('carousel3dNext');
+const carousel3dToggle = document.getElementById('carousel3dToggle');
 
-function updateAirplanePosition() {
-  const scrollPercentage = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+let carousel3dAngle = 0;
+let carousel3dIsRotating = false;
+let carousel3dRotationInterval = null;
+const carousel3dItemCount = carousel3dItems.length;
+const carousel3dAngleIncrement = 360 / carousel3dItemCount;
 
-  // Move airplane from left (-100px) to right (100vw + 100px) based on scroll
-  const planePosition = (scrollPercentage / 100) * (window.innerWidth + 200) - 100;
+function updateCarousel3D() {
+  carousel3dWheel.style.transform = `rotateY(${carousel3dAngle}deg)`;
 
-  // Add slight vertical bobbing based on scroll position
-  const verticalBob = Math.sin(scrollPercentage / 10) * 20;
+  // Position each item in a circle
+  carousel3dItems.forEach((item, index) => {
+    const itemAngle = carousel3dAngleIncrement * index;
+    const radius = 700; // Distance from center for better depth
 
-  // Rotate slightly based on direction
-  const rotation = Math.sin(scrollPercentage / 20) * 5;
+    item.style.transform = `
+      rotateY(${itemAngle}deg) 
+      translateZ(${radius}px)
+    `;
 
-  flyingPlane.style.transform = `translateX(${planePosition}px) translateY(${verticalBob}px) rotate(${rotation}deg)`;
+    // Calculate if item is in front (facing viewer)
+    const normalizedAngle = ((itemAngle - carousel3dAngle) % 360 + 360) % 360;
+
+    // Adjust opacity and scale based on position for depth effect
+    if (normalizedAngle > 90 && normalizedAngle < 270) {
+      // Items on the back - Full visibility
+      item.style.opacity = '1';
+      item.style.transform += ' scale(0.85)';
+    } else if (normalizedAngle > 45 && normalizedAngle <= 90 || normalizedAngle >= 270 && normalizedAngle < 315) {
+      // Items on the sides - Full visibility
+      item.style.opacity = '1';
+      item.style.transform += ' scale(0.95)';
+    } else {
+      // Front item
+      item.style.opacity = '1';
+      item.style.transform += ' scale(1)';
+    }
+  });
 }
 
-window.addEventListener('scroll', updateAirplanePosition);
-updateAirplanePosition();
-*/
+function rotateCarousel3D(direction) {
+  carousel3dAngle += carousel3dAngleIncrement * direction;
+  updateCarousel3D();
+}
 
-// Flying airplane animation removed per user request
+function startCarousel3DRotation() {
+  if (carousel3dRotationInterval) return;
+  carousel3dIsRotating = true;
+  carousel3dToggle.classList.add('rotating');
+  carousel3dRotationInterval = setInterval(() => {
+    rotateCarousel3D(1);
+  }, 4000); // Rotate every 4 seconds
+}
+
+function stopCarousel3DRotation() {
+  clearInterval(carousel3dRotationInterval);
+  carousel3dRotationInterval = null;
+  carousel3dIsRotating = false;
+  carousel3dToggle.classList.remove('rotating');
+}
+
+// Navigation buttons
+carousel3dPrev.addEventListener('click', () => {
+  stopCarousel3DRotation();
+  rotateCarousel3D(-1);
+});
+
+carousel3dNext.addEventListener('click', () => {
+  stopCarousel3DRotation();
+  rotateCarousel3D(1);
+});
+
+// Toggle auto-rotation
+carousel3dToggle.addEventListener('click', () => {
+  if (carousel3dIsRotating) {
+    stopCarousel3DRotation();
+  } else {
+    startCarousel3DRotation();
+  }
+});
+
+// Click to expand photo in lightbox
+carousel3dItems.forEach(item => {
+  const photo = item.querySelector('.carousel-3d-photo');
+  photo.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const img = photo.querySelector('img');
+
+    const lightbox = document.createElement('div');
+    lightbox.className = 'seat-lightbox';
+    lightbox.innerHTML = `
+      <div class="lightbox-content">
+        <button class="lightbox-close" aria-label="Close">&times;</button>
+        <img src="${img.src}" alt="Προσκοπική Ανάμνηση">
+      </div>
+    `;
+
+    document.body.appendChild(lightbox);
+
+    const closeLightbox = () => {
+      lightbox.classList.add('closing');
+      setTimeout(() => lightbox.remove(), 300);
+    };
+
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    setTimeout(() => lightbox.classList.add('active'), 10);
+  });
+});
+
+// Initialize carousel
+updateCarousel3D();
+// Start auto-rotation by default
+startCarousel3DRotation();
+
 
 console.log('✨ Scout Journey website loaded with WOW features!');
 console.log('🎁 Easter Egg: Click the logo 3 times quickly for a surprise!');
