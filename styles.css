@@ -1,6 +1,6 @@
 /* ===== CSS Custom Properties - Enhanced Elegant Version ===== */
 :root {
-  /* Refined color palette  - Deeper, more sophisticated tones */
+
   --primary-green: #1d3810;
   --primary-green-medium: #2d5016;
   --primary-green-light: #3f6620;
@@ -11,13 +11,13 @@
   --earth-tan: #b89968;
   --sage-green: #8ba888;
 
-  /* Sophisticated gradients */
+
   --gradient-hero: linear-gradient(135deg, #0f1f08 0%, #1d3810 40%, #2d5016 100%);
   --gradient-card: linear-gradient(135deg, rgba(201, 169, 97, 0.06) 0%, rgba(139, 168, 136, 0.04) 100%);
   --gradient-gold: linear-gradient(135deg, #c9a961 0%, #e4c898 50%, #d4b875 100%);
   --gradient-overlay: linear-gradient(to bottom, rgba(29, 56, 16, 0.92), rgba(29, 56, 16, 0.7));
 
-  /* Refined neutral palette */
+
   --white: #ffffff;
   --off-white: #fafaf8;
   --cream: #f5f3ed;
@@ -26,7 +26,7 @@
   --dark-gray: #2c2a25;
   --black: #171614;
 
-  /* Refined spacing */
+
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.75rem;
@@ -34,23 +34,23 @@
   --spacing-xl: 3.5rem;
   --spacing-xxl: 5rem;
 
-  /* Elegant typography */
+
   --font-heading: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
 
-  /* Sophisticated shadows */
+
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.12), 0 6px 6px rgba(0, 0, 0, 0.08);
   --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.16), 0 10px 10px rgba(0, 0, 0, 0.1);
   --shadow-subtle: 0 2px 8px rgba(29, 56, 16, 0.08);
 
-  /* Smooth transitions */
+
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Refined border radius */
+
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 18px;
@@ -68,7 +68,7 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   scroll-padding-top: 100px;
-  /* Account for sticky navbar */
+
 }
 
 body {
@@ -1052,7 +1052,7 @@ p {
 
   .wing {
     display: none;
-    /* Hide wings on very small screens to avoid horizontal scroll */
+
   }
 
   .airplane-tail {
@@ -1155,7 +1155,7 @@ p {
     inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   border: 4px solid rgba(255, 215, 0, 0.8);
   background: #000;
-  /* Dark background for letterboxing */
+
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform-origin: center;
@@ -1188,10 +1188,10 @@ p {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  /* Show FULL image without cropping */
+
   display: block;
   filter: brightness(1);
-  /* Full brightness always */
+
   transition: filter 0.3s ease;
 }
 
@@ -1329,31 +1329,31 @@ p {
 @media (max-width: 480px) {
   .carousel-3d-section {
     padding: var(--spacing-xxl) var(--spacing-xs);
-    /* Reduce horizontal padding */
+
     overflow: hidden;
-    /* Ensure no scrollbars */
+
   }
 
   .carousel-3d-container {
     height: 320px;
-    /* More compact height */
+
     max-width: 100vw;
     overflow: visible;
-    /* Let items protrude 3D space but container hides overflow */
+
   }
 
   .carousel-3d-item {
     width: 50vw;
-    /* Reduced to 50% to prevent overlap */
+
     max-width: 260px;
     height: 40vw;
     max-height: 190px;
     margin-left: -25vw;
-    /* Center based on half width */
+
     margin-top: -20vw;
   }
 
-  /* Adjust margins for max-width constraint */
+
   @media (min-width: 400px) {
     .carousel-3d-item {
       margin-left: -130px;
@@ -1363,12 +1363,12 @@ p {
 
   .carousel-3d-stage {
     perspective: 500px;
-    /* Stronger perspective for depth */
+
   }
 
   .carousel-3d-nav {
     display: none;
-    /* Hide buttons on mobile, use swipe instead */
+
   }
 }
 
@@ -1479,13 +1479,13 @@ p {
   /* Hero mobile optimization */
   .hero {
     min-height: 70vh;
-    /* Reduced from 90vh */
+
     padding: var(--spacing-lg) var(--spacing-md);
   }
 
   .hero-name {
     font-size: clamp(1.4rem, 6vw, 2rem);
-    /* Smaller */
+
     margin-bottom: 0.3rem;
     letter-spacing: 0.04em;
     line-height: 1.2;
@@ -1493,7 +1493,7 @@ p {
 
   .hero-system {
     font-size: clamp(0.75rem, 3vw, 1rem);
-    /* Smaller */
+
     letter-spacing: 0.08em;
     padding-bottom: 0.25rem;
     margin-bottom: var(--spacing-sm);
@@ -1501,21 +1501,21 @@ p {
 
   .hero h1 {
     font-size: clamp(1.6rem, 6vw, 2.2rem);
-    /* Smaller */
+
     margin-bottom: 0.5rem;
     line-height: 1.2;
   }
 
   .hero-subtitle {
     font-size: clamp(1rem, 3.5vw, 1.3rem);
-    /* Smaller */
+
     margin-bottom: var(--spacing-sm);
     line-height: 1.3;
   }
 
   .hero-description {
     font-size: clamp(0.9rem, 3vw, 1rem);
-    /* Smaller */
+
     line-height: 1.6;
     margin-bottom: var(--spacing-md);
   }
@@ -1523,7 +1523,7 @@ p {
   .hero-cta {
     flex-direction: column;
     gap: 0.75rem;
-    /* Tighter gap */
+
     width: 100%;
   }
 
@@ -1589,10 +1589,10 @@ p {
   /* Navigation mobile refined */
   .navbar {
     background: rgba(250, 250, 248, 0.85);
-    /* Slightly more transparent */
+
     backdrop-filter: blur(20px) saturate(180%);
     padding: 0.25rem 0;
-    /* Simpler, smaller navbar on mobile */
+
   }
 
   .nav-container {
