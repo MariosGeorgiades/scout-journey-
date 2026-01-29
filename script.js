@@ -576,6 +576,51 @@ window.addEventListener('resize', () => {
 });
 
 
+// ===== WOW FACTOR: Live Scouting Countdown =====
+const startDate = new Date('2017-10-01T00:00:00');
+
+function updateScoutingCountdown() {
+  const now = new Date();
+
+  // Calculate differences
+  const diffMs = now - startDate;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+  // Calculate years, months, days, hours
+  let years = now.getFullYear() - startDate.getFullYear();
+  let months = now.getMonth() - startDate.getMonth();
+  let days = now.getDate() - startDate.getDate();
+  let hours = now.getHours();
+
+  // Adjust for negative values
+  if (days < 0) {
+    months--;
+    const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+    days += lastMonth.getDate();
+  }
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  // Update DOM
+  const yearsEl = document.getElementById('years');
+  const monthsEl = document.getElementById('months');
+  const daysEl = document.getElementById('days');
+  const hoursEl = document.getElementById('hours');
+
+  if (yearsEl) yearsEl.textContent = years;
+  if (monthsEl) monthsEl.textContent = months;
+  if (daysEl) daysEl.textContent = days;
+  if (hoursEl) hoursEl.textContent = hours;
+}
+
+// Update countdown every second
+updateScoutingCountdown();
+setInterval(updateScoutingCountdown, 1000);
+
+
 console.log('✨ Scout Journey website loaded with WOW features!');
 console.log('🎁 Easter Egg: Click the logo 3 times quickly for a surprise!');
 console.log('📊 Scroll Progress Bar: Active');
