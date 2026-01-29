@@ -649,7 +649,16 @@ function updateCarousel3D() {
   // Position each item in a circle
   carousel3dItems.forEach((item, index) => {
     const itemAngle = carousel3dAngleIncrement * index;
-    const radius = 700; // Distance from center for better depth
+
+    // Dynamic radius based on screen width
+    let radius = 700; // Default for desktop
+    if (window.innerWidth <= 480) {
+      radius = 210; // Much smaller for mobile
+    } else if (window.innerWidth <= 768) {
+      radius = 350; // Tablet
+    } else if (window.innerWidth <= 1024) {
+      radius = 500; // Laptop
+    }
 
     item.style.transform = `
       rotateY(${itemAngle}deg) 
@@ -753,6 +762,11 @@ carousel3dItems.forEach(item => {
 updateCarousel3D();
 // Start auto-rotation by default
 startCarousel3DRotation();
+
+// Update on resize
+window.addEventListener('resize', () => {
+  updateCarousel3D();
+});
 
 
 console.log('✨ Scout Journey website loaded with WOW features!');
