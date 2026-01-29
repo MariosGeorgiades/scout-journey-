@@ -170,7 +170,8 @@ navLinks.forEach(link => {
   });
 });
 
-// ===== Scroll Animations =====
+// ===== PERFORMANCE: Optimized Scroll Handling =====
+// Use IntersectionObserver for scroll-triggered animations instead of scroll event
 const observerOptions = {
   threshold: 0.1,
   rootMargin: '0px 0px -50px 0px'
@@ -180,6 +181,8 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
+      // Unobserve after showing to save resources
+      observer.unobserve(entry.target);
     }
   });
 }, observerOptions);
@@ -192,7 +195,7 @@ timelineItems.forEach(item => observer.observe(item));
 const projectCards = document.querySelectorAll('.project-card');
 projectCards.forEach((card, index) => {
   observer.observe(card);
-  // Add staggered 3D tilt
+  // Add staggered 3D tilt only when visible
   setTimeout(() => {
     add3DTilt(card);
   }, index * 100);
@@ -203,6 +206,70 @@ const galleryItems = document.querySelectorAll('.gallery-item');
 galleryItems.forEach((item, index) => {
   item.style.transitionDelay = `${index * 0.05}s`;
   observer.observe(item);
+});
+
+// Optimized Navbar & Back-to-Top using IntersectionObserver
+const heroSection = document.querySelector('.hero');
+const navbar = document.querySelector('.navbar');
+const scrollToTopBtn = document.getElementById('scrollToTop');
+
+if (heroSection) {
+  const heroObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) {
+        // Hero is out of view
+        navbar.classList.add('scrolled');
+        scrollToTopBtn.classList.add('visible');
+      } else {
+        // Hero is in view
+        navbar.classList.remove('scrolled');
+        scrollToTopBtn.classList.remove('visible');
+      }
+    });
+  }, { threshold: 0.1 }); // Trigger when 10% of hero is still visible
+
+  heroObserver.observe(heroSection);
+}
+
+// Optimized Scroll Progress using RequestAnimationFrame
+const scrollProgress = document.getElementById('scrollProgress');
+let isScrolling = false;
+
+function onScroll() {
+  if (!isScrolling) {
+    window.requestAnimationFrame(() => {
+      updateScrollProgress();
+      isScrolling = false;
+    });
+    isScrolling = true;
+  }
+}
+
+function updateScrollProgress() {
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const totalScrollable = documentHeight - windowHeight;
+  const scrollPercentage = (scrollTop / totalScrollable) * 100;
+  scrollProgress.style.width = `${Math.min(scrollPercentage, 100)}%`;
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// ===== PERFORMANCE: Page Visibility API =====
+// Pause animations when tab is inactive to save battery
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    stopCarousel3DRotation();
+    console.log('Tab hidden: Pausing animations to save energy 🔋');
+  } else {
+    // Only resume if it wasn't manually paused
+    const carouselToggle = document.getElementById('carousel3dToggle');
+    if (carouselToggle && !carouselToggle.classList.contains('paused')) {
+      startCarousel3DRotation();
+    }
+    console.log('Tab active: Resuming animations ⚡');
+  }
 });
 
 // ===== Lightbox Functionality =====
@@ -276,265 +343,13 @@ const updateActiveLink = () => {
   });
 };
 
-window.addEventListener('scroll', updateActiveLink);
-
-// ===== WOW FACTOR: Initialize on Page Load =====
-window.addEventListener('load', () => {
-  // Initialize particle system in hero
-  const hero = document.querySelector('.hero');
-  if (hero) {
-    // Fade in hero
-    hero.style.opacity = '0';
-    setTimeout(() => {
-      hero.style.transition = 'opacity 0.8s ease';
-      hero.style.opacity = '1';
-    }, 100);
-
-    // Create particle effect
-    new ParticleSystem(hero);
-  }
-
-  // Typewriter effect for hero subtitle
-  const heroSubtitle = document.querySelector('.hero-subtitle');
-  if (heroSubtitle) {
-    const originalText = heroSubtitle.textContent;
-    typewriterEffect(heroSubtitle, originalText, 60);
-  }
-
-  // Add glow pulse to timeline markers
-  const timelineMarkers = document.querySelectorAll('.timeline-marker');
-  timelineMarkers.forEach((marker, index) => {
-    marker.style.animation = `glowPulse 2s ease-in-out ${index * 0.2}s infinite`;
-  });
-});
-
-// ===== Optional: Add subtle parallax effect to hero =====
-let ticking = false;
 window.addEventListener('scroll', () => {
-  if (!ticking) {
+  if (!isScrolling) {
     window.requestAnimationFrame(() => {
-      const scrolled = window.pageYOffset;
-      const hero = document.querySelector('.hero');
-
-      if (hero && scrolled <= hero.offsetHeight) {
-        hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-      }
-
-      ticking = false;
+      updateActiveLink();
     });
-
-    ticking = true;
   }
-});
-
-// ===== WOW FACTOR: Live Scouting Countdown =====
-function updateScoutingCountdown() {
-  const startDate = new Date('2017-01-01T00:00:00');
-  const now = new Date();
-
-  // Calculate differences
-  const diffMs = now - startDate;
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  // Calculate years, months, days, hours
-  let years = now.getFullYear() - startDate.getFullYear();
-  let months = now.getMonth() - startDate.getMonth();
-  let days = now.getDate() - startDate.getDate();
-  let hours = now.getHours();
-
-  // Adjust for negative values
-  if (days < 0) {
-    months--;
-    const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-    days += lastMonth.getDate();
-  }
-
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  // Update DOM
-  document.getElementById('years').textContent = years;
-  document.getElementById('months').textContent = months;
-  document.getElementById('days').textContent = days;
-  document.getElementById('hours').textContent = hours;
-}
-
-// Update countdown every second
-updateScoutingCountdown();
-setInterval(updateScoutingCountdown, 1000);
-
-// ===== EASTER EGG: Confetti on Triple Click Logo =====
-let logoClickCount = 0;
-let logoClickTimer = null;
-
-const navLogo = document.querySelector('.nav-logo');
-
-navLogo.addEventListener('click', (e) => {
-  logoClickCount++;
-
-  if (logoClickCount === 1) {
-    logoClickTimer = setTimeout(() => {
-      logoClickCount = 0;
-    }, 1000);
-  }
-
-  if (logoClickCount === 3) {
-    clearTimeout(logoClickTimer);
-    logoClickCount = 0;
-    triggerEasterEgg();
-  }
-});
-
-function triggerEasterEgg() {
-  // Adjust confetti count based on screen size
-  const isMobile = window.innerWidth <= 768;
-  const colors = ['#d4af37', '#f4d03f', '#2d5016', '#4a7c2c'];
-  const confettiCount = isMobile ? 50 : 100;
-
-  for (let i = 0; i < confettiCount; i++) {
-    setTimeout(() => {
-      createConfetti(colors[Math.floor(Math.random() * colors.length)]);
-    }, i * 20);
-  }
-
-  // Show special message - responsive sizing
-  const message = document.createElement('div');
-  message.innerHTML = `
-    <div style="text-align: center;">
-      <div style="font-size: clamp(1.5rem, 8vw, 3rem); margin-bottom: 0.5rem;">🎖️</div>
-      <div style="font-size: clamp(1.2rem, 6vw, 2.5rem); line-height: 1.3;">ΑΙΕΝ ΑΡΙΣΤΕΥΕΙΝ!</div>
-      <div style="font-size: clamp(1rem, 4vw, 1.5rem); margin-top: 0.5rem; opacity: 0.9;">82ον Σύστημα</div>
-    </div>
-  `;
-  message.style.cssText = `
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: 900;
-    color: #d4af37;
-    text-shadow: 0 0 30px rgba(212, 175, 55, 0.8), 2px 2px 10px rgba(0, 0, 0, 0.8);
-    z-index: 10000;
-    pointer-events: none;
-    animation: easterEggPulse 2.5s ease-out forwards;
-    font-family: var(--font-heading);
-    padding: 1rem;
-    max-width: 90vw;
-    background: rgba(45, 80, 22, 0.95);
-    border-radius: 20px;
-    border: 3px solid #d4af37;
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
-  `;
-
-  document.body.appendChild(message);
-
-  setTimeout(() => {
-    message.remove();
-  }, 2500);
-}
-
-function createConfetti(color) {
-  const confetti = document.createElement('div');
-  confetti.style.cssText = `
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background: ${color};
-    top: -10px;
-    left: ${Math.random() * 100}vw;
-    opacity: 1;
-    transform: rotate(${Math.random() * 360}deg);
-    z-index: 9999;
-    pointer-events: none;
-  `;
-
-  document.body.appendChild(confetti);
-
-  const fallDuration = 2000 + Math.random() * 2000;
-  const xMovement = (Math.random() - 0.5) * 200;
-
-  confetti.animate([
-    {
-      top: '-10px',
-      left: `${parseFloat(confetti.style.left)}px`,
-      opacity: 1,
-      transform: 'rotate(0deg)'
-    },
-    {
-      top: '100vh',
-      left: `${parseFloat(confetti.style.left) + xMovement}px`,
-      opacity: 0,
-      transform: `rotate(${Math.random() * 720}deg)`
-    }
-  ], {
-    duration: fallDuration,
-    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-  });
-
-  setTimeout(() => {
-    confetti.remove();
-  }, fallDuration);
-}
-
-// Add CSS for easter egg animation
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes easterEggPulse {
-    0% {
-      transform: translate(-50%, -50%) scale(0);
-      opacity: 0;
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.2);
-      opacity: 1;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 0;
-    }
-  }
-`;
-document.head.appendChild(style);
-
-// ===== POLISH: Scroll Progress Bar =====
-const scrollProgress = document.getElementById('scrollProgress');
-
-function updateScrollProgress() {
-  const windowHeight = window.innerHeight;
-  const documentHeight = document.documentElement.scrollHeight;
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-  const totalScrollable = documentHeight - windowHeight;
-  const scrollPercentage = (scrollTop / totalScrollable) * 100;
-
-  scrollProgress.style.width = `${Math.min(scrollPercentage, 100)}%`;
-}
-
-window.addEventListener('scroll', updateScrollProgress);
-updateScrollProgress();
-
-// ===== POLISH: Scroll to Top Button =====
-const scrollToTopBtn = document.getElementById('scrollToTop');
-
-function toggleScrollToTop() {
-  if (window.pageYOffset > 300) {
-    scrollToTopBtn.classList.add('visible');
-  } else {
-    scrollToTopBtn.classList.remove('visible');
-  }
-}
-
-scrollToTopBtn.addEventListener('click', () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-});
-
-window.addEventListener('scroll', toggleScrollToTop);
-toggleScrollToTop();
+}, { passive: true });
 
 // ===== POLISH: Preload Critical Resources =====
 window.addEventListener('load', () => {
