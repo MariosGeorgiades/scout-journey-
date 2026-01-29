@@ -127,15 +127,7 @@ const navbar = document.getElementById('navbar');
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
-
-
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 50) {
-    navbar.classList.add('scrolled');
-  } else {
-    navbar.classList.remove('scrolled');
-  }
-});
+const scrollToTopBtn = document.getElementById('scrollToTop');
 
 // Mobile menu toggle
 navToggle.addEventListener('click', () => {
@@ -210,8 +202,6 @@ galleryItems.forEach((item, index) => {
 
 // Optimized Navbar & Back-to-Top using IntersectionObserver
 const heroSection = document.querySelector('.hero');
-const navbar = document.querySelector('.navbar');
-const scrollToTopBtn = document.getElementById('scrollToTop');
 
 if (heroSection) {
   const heroObserver = new IntersectionObserver((entries) => {
